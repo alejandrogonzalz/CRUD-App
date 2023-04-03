@@ -1,0 +1,14 @@
+html{
+    font-size:100%;
+    box-sizing:border-box;
+    height: 100%;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+.nopadding{
+    margin:0 !important;
+    padding: 0 !important;
+}
