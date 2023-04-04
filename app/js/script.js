@@ -4,7 +4,7 @@
 
 $(document).ready(function(){
     // Open modal window
-    $('.button-card').click(function(){
+    $('#buttonAdd').click(function(){
         $('#myModal').modal('show');
       });
 
@@ -22,17 +22,17 @@ $(document).ready(function(){
       });
 
     // Insert to database 
-    $('#button1').click(function(){
-        var first_name = $('#first_name').val();
-        var last_name = $('#last_name').val();
+    $('#buttonInsert').click(function(){
+        var first_name = $('#first-name').val();
+        var last_name = $('#last-name').val();
         var phone1 = $('#phone1').val();
         var phone2 = $('#phone2').val();
         var phone3 = $('#phone3').val();
         var phone_number = phone1 + '-' + phone2 + '-' + phone3;
-        
+        console.log(phone1,phone2,phone3,first_name,last_name);
         $.ajax({
             type: "POST",
-            url: "/insert",
+            url: "http://localhost:5000/insert",
             data: JSON.stringify({
                 "first_name": first_name,
                 "last_name": last_name,
@@ -42,21 +42,60 @@ $(document).ready(function(){
             contentType: "application/json",
             success: function(response){
                 console.log(response);
+                $('#first-name').val('');
+                $('#last-name').val('');
+                $('#phone1').val('');
+                $('#phone2').val('');
+                $('#phone3').val('');
+                modal.modal('hide');
+                location.reload();
             },
             error: function(xhr, status, error){
-                console.log(xhr.responseText);
+                console.log(xhr.responseText);  
             }
         });
     });
 
+    // Dynamic list
+    var dataContainer = $('<div class="data-container"></div>');
+    $.ajax({
+        url: 'http://localhost:5000/contacts',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data){
+            // Iterate over the query made by python to create a new div element
+            $.each(data.contacts,function(index, contact){
+                var newContact = $('<div class="data" id="'+ contact.phone_number + '">' +
+                                        '<div class="data-content">'+
+                                            '<h3 class="name">' + 
+                                                contact.first_name + ' ' + contact.last_name +                                                    
+                                            '</h3>' +
+                                            '<div><i class="bx bxs-phone phone"></i><span>'+ contact.phone_number +'</span></div>' +
+                                        '</div>' +  
+                                       '<div class="delete-container">' +
+                                           '<div class="delete-box"><i class="bx bxs-trash delete"></i></div>' +
+                                        '</div>' +
+                                    '</div>');
+                dataContainer.append(newContact);
+            });
+            // Append the dataContainer to the #contacts-container element
+            $('#contacts-container').append(dataContainer);
+        },
+        error: function(xhr,status,error) {
+            console.log('Error: '+ error.message);
+        }
+    });
+
     // Delete row 
     $('.delete-box').click(function() {
-        var id = 123; // specify the ID of the row to delete
+        var id = $(this).data('id'); 
         $.ajax({
-            url: '/delete/' + id,
-            type: 'DELETE',
+            // url: 'http://localhost:5000/insert' + id,
+            // type: 'DELETE',
             success: function(response) {
                 console.log(response.message);
+                console.log(id);
+                // location.reload();
             },
             error: function(xhr, status, error) {
                 console.log(xhr.responseText);

@@ -19,27 +19,17 @@
         <div class="app-container">
             <div class="header">
                 <i class='bx bxs-contact contacts'></i>
-                <h1>Phone Book App</h1>
+                <h1>Phone Book App</h1> 
             </div>
             <div class="title">
                 <h2>Contacts</h2>
-                <button type="button" class="btn btn-primary button-card" data-toggle="modal" data-target="#myModal"><span>+ Add Contact</span></button>
+                <button type="button" class="btn btn-primary" id="buttonAdd" data-toggle="modal" data-target="#myModal"><span>+ Add Contact</span></button>
             </div>
             <div class="search-bar">
                 <i class='bx bx-search lens'></i>
                 <input type="search" placeholder="Search for contact by last name..." class="search">
             </div>  
-            <div class="data">
-                <div class="data-content">
-                    <h3 class="name">
-                        Eric Elliot
-                    </h3>
-                <div><i class='bx bxs-phone phone'></i><span>220-655-6575</span></div>
-                </div>
-                <div class="delete-container">
-                    <div class="delete-box"><i class='bx bxs-trash delete'></i></div>
-                </div>
-            </div>
+            <div id="contacts-container"></div>
         </div>
 
 <!-- START OF MODAL WINDOW -->
@@ -80,7 +70,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary modal-close" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-primary" id="buttonInsert">Save changes</button>
                     </div>                
                 </div>
             </div>
