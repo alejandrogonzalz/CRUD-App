@@ -10,6 +10,9 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>   
     <!-- CSS -->
     <link rel="stylesheet" href="dist/style.css">   
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+
 </head>
 <body>
     <div class="col">
@@ -20,7 +23,7 @@
             </div>
             <div class="title">
                 <h2>Contacts</h2>
-                <button class="button-card"><span>+ Add Contact</span></button>
+                <button type="button" class="btn btn-primary button-card" data-toggle="modal" data-target="#myModal"><span>+ Add Contact</span></button>
             </div>
             <div class="search-bar">
                 <i class='bx bx-search lens'></i>
@@ -35,6 +38,50 @@
                 </div>
                 <div class="delete-container">
                     <div class="delete-box"><i class='bx bxs-trash delete'></i></div>
+                </div>
+            </div>
+        </div>
+
+<!-- START OF MODAL WINDOW -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Enter your details</h5>
+                        <button type="button" class="modal-close" id="m-close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="first-name" class="form-label">First Name:</label>
+                                <input type="text" class="form-control" id="first-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name" class="form-label">Last Name:</label>
+                                <input type="text" class="form-control" id="last-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Phone Number:</label>
+                                
+                                <div class="input-group">
+                                  <input type="text" class="form-control" id="phone1" maxlength="3" size="3" placeholder="XXX">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text">-</span>
+                                  </div>
+                                  <input type="text" class="form-control" id="phone2" maxlength="3" size="3" placeholder="XXX">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text">-</span>
+                                  </div>
+                                  <input type="text" class="form-control" id="phone3" maxlength="4" size="4" placeholder="XXXX">
+                                </div>
+                              </div>
+                              
+                        </form>              
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary modal-close" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>                
                 </div>
             </div>
         </div>

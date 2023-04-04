@@ -1,0 +1,25 @@
+#m-close {
+  background-color: transparent;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  font-size: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  outline: none;
+}
+
+#m-close:hover {
+  color: #ff0000;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.input-group-text {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}/*# sourceMappingURL=modal.css.map */

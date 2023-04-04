@@ -13,6 +13,32 @@ html {
   padding: 0 !important;
 }
 
+#m-close {
+  background-color: transparent;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  font-size: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  outline: none;
+}
+
+#m-close:hover {
+  color: #ff0000;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.input-group-text {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
 .col {
   display: flex;
   justify-content: center;
@@ -59,23 +85,9 @@ html {
 }
 
 .button-card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
   font-size: 1.1rem;
-  color: white;
-  background-color: #347BF6;
   padding: 2px 32px;
   border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.button-card:hover {
-  background: white;
-  color: #347BF6;
-  border: 1px solid #347BF6;
 }
 
 .search-bar {
@@ -107,7 +119,7 @@ html {
 .data {
   display: flex;
   background-color: white;
-  padding: 10px 15px 25px;
+  padding: 18px 15px;
   border-radius: 6px;
   border: 2px solid lightgray;
 }

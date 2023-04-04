@@ -1,6 +1,7 @@
-@import"global";
+@import"global";    
+@import"modal";
 
-.col{
+.col{   
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,23 +48,9 @@
 }
 
 .button-card{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border:none;
     font-size: 1.1rem;
-    color: white;
-    background-color: #347BF6;
     padding: 2px 32px;
     border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.button-card:hover{
-    background: white;
-    color: #347BF6;
-    border: 1px solid #347BF6;
 }
 
 .search-bar{
@@ -95,7 +82,7 @@
 .data{
     display: flex;
     background-color: white;
-    padding: 10px 15px 25px;
+    padding: 18px 15px;
     border-radius: 6px;
     border: 2px solid lightgray;
 }
