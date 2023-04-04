@@ -22,14 +22,14 @@ $(document).ready(function(){
       });
 
     // Insert to database 
-    $('#buttonInsert').click(function(){
+    function insert() {
         var first_name = $('#first-name').val();
         var last_name = $('#last-name').val();
         var phone1 = $('#phone1').val();
         var phone2 = $('#phone2').val();
         var phone3 = $('#phone3').val();
         var phone_number = phone1 + '-' + phone2 + '-' + phone3;
-        console.log(phone1,phone2,phone3,first_name,last_name);
+        console.log(phone_number, first_name, last_name);
         $.ajax({
             type: "POST",
             url: "http://localhost:5000/insert",
@@ -54,6 +54,15 @@ $(document).ready(function(){
                 console.log(xhr.responseText);  
             }
         });
+    }
+    $('#buttonInsert').click(function(){
+        insert();
+    });
+    $('input').keypress(function(e) {
+        if (e.which == 13) { 
+          insert(); 
+          return false; 
+        }
     });
 
     // Dynamic list
@@ -71,9 +80,12 @@ $(document).ready(function(){
                                                 contact.first_name + ' ' + contact.last_name +                                                    
                                             '</h3>' +
                                             '<div><i class="bx bxs-phone phone"></i><span>'+ contact.phone_number +'</span></div>' +
-                                        '</div>' +  
-                                       '<div class="delete-container">' +
-                                           '<div class="delete-box"><i class="bx bxs-trash delete"></i></div>' +
+                                        '</div>' + 
+                                        '<div class="edit-container">' +
+                                            '<div class="edit-box"><i class="bx bxs-edit edit"></i></div>' +
+                                        '</div>' +
+                                        '<div class="delete-container">' +
+                                            '<div class="delete-box"><i class="bx bxs-trash delete"></i></div>' +
                                         '</div>' +
                                     '</div>');
                 dataContainer.append(newContact);
@@ -87,15 +99,16 @@ $(document).ready(function(){
     });
 
     // Delete row 
-    $('.delete-box').click(function() {
-        var id = $(this).data('id'); 
+    $(document).on('click', '.delete-box',function() {
+        var id = $(this).closest('.data').attr('id'); 
         $.ajax({
-            // url: 'http://localhost:5000/insert' + id,
-            // type: 'DELETE',
+            url: 'http://localhost:5000/delete/' + id,
+            type: 'DELETE',
             success: function(response) {
                 console.log(response.message);
                 console.log(id);
-                // location.reload();
+                $('#'+ id).remove();
+                location.reload();
             },
             error: function(xhr, status, error) {
                 console.log(xhr.responseText);

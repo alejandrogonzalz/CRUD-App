@@ -2,6 +2,7 @@ html {
   font-size: 100%;
   box-sizing: border-box;
   height: 100%;
+  padding-top: 5vh;
 }
 
 *, *::before, *::after {
@@ -122,14 +123,15 @@ html {
 }
 
 .data-content {
-  width: 100%;
+  width: 90%;
 }
 
 .delete-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 10%;
+  width: 5%;
+  margin: 0 10px 0;
 }
 
 .delete-box {
@@ -152,6 +154,40 @@ html {
 }
 
 .delete {
+  font-size: 18x;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.edit-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5%;
+  margin: 0 10px 0;
+}
+
+.edit-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0D6EFD;
+  aspect-ratio: 1;
+  height: 50%;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.edit-box:hover {
+  background-color: #0B5ED7;
+}
+.edit-box:hover .edit {
+  color: #EAFFFF;
+}
+
+.edit {
   font-size: 18x;
   color: white;
   cursor: pointer;

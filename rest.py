@@ -30,27 +30,7 @@ def insert_new_entry():
            
     return jsonify({'message':'New entry added'}), 200
 
-# DELETE route to delete a row from the database
-@app.route('/delete/<int:id>', methods=['DELETE'])
-def delete_entry(id):
-    mydb = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="root",
-        database="crud_app"
-    )
-
-    with mydb.cursor() as cursor:
-        sql = "DELETE FROM contacts WHERE id=%s"
-        val = (id,)
-        cursor.execute(sql,val)
-        mydb.commit()
-
-    mydb.close()
-
-    return jsonify({'message': 'Entry deleted'}), 200
-
-# Get all the rows from the table
+# GET all the rows from the table
 @app.route('/contacts')
 def get_contacts():
     mydb = pymysql.connect(
@@ -77,6 +57,30 @@ def get_contacts():
 
     return jsonify({'contacts':result})
 
+# DELETE route to delete a row from the database
+@app.route('/delete/<string:id>', methods=['DELETE'])
+@cross_origin()
+def delete_entry(id):
+
+    mydb = pymysql.connect(
+        host="localhost",
+        user="root",
+        password="root",
+        database="crud_app"
+    )
+
+    with mydb.cursor() as cursor:
+        sql = "DELETE FROM contacts WHERE phone_number=%s"
+        val = (id,)
+        cursor.execute(sql,val)
+        mydb.commit()
+
+    mydb.close()
+
+    return jsonify({'message': 'Entry deleted'}), 200
+
+
+
 # Hello world 
 @app.route('/api/hello')
 def hello():
@@ -90,20 +94,3 @@ def after_request(response):
 if __name__ == '__main__':
     app.run(debug=True)
 
-
-
-
-# # function to create and/or drop table
-# def dropTable():
-#     mydb = pymysql.connect(
-#     host="localhost",
-#     user="root",
-#     password="root",
-#     database="crud_app"
-#     )
-#     mycursor = mydb.cursor()
-#     mycursor.execute("DROP TABLE IF EXISTS contacts")
-#     mycursor.execute("CREATE TABLE contacts (first_name VARCHAR(50), last_name VARCHAR(50), phone_number CHAR(12) PRIMARY KEY)")
-#     mydb.commit()
-#     mydb.close()
-#     return
