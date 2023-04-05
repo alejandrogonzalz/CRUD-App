@@ -20,3 +20,10 @@ CREATE TABLE contacts (
     PRIMARY KEY (contact_id)
 );
 
+
+{
+    "first_name": "Alejandro",
+    "last_name": "Gonzalez",
+    "phone_number": "111-000-1231",
+    "contact_id": "28"
+}

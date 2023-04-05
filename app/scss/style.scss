@@ -133,7 +133,7 @@
     margin: 0 10px 0;
 }
 
-.editBox{
+.buttonEdit{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -143,9 +143,10 @@
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
+    border: none;
 }
 
-.editBox:hover{
+.buttonEdit:hover{
     background-color: #0B5ED7;
     .edit{
         color: #EAFFFF;
@@ -158,4 +159,31 @@
     cursor: pointer;
     transition: all 0.3s ease;
 }
+
+
+// @media (min-width: $sm) {
+//     .app-container{
+//         width: 80%;
+//     }
+// }
+// @media (min-width: $md) {
+//     .app-container{
+//         width: 80%;
+//     }
+// }
+// @media (min-width: $lg) {
+//     .app-container{
+//         width: 60%;
+//     }
+// }
+// @media (min-width: $xl) {
+//     .app-container{
+//         width: 50%;
+//     }
+// }
+// @media (min-width: $xxl) {
+//     .app-container{
+//         width: 50%;
+//     }
+// }
 

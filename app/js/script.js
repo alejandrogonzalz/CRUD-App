@@ -1,47 +1,33 @@
-//Cambiar lo de abajo para enlazarlo con frontend para q se llame cuando un boton haga click onClick event handler
-// validar el telefono sea de 12 digitos y que no contenga caracteres que no sean numberos ni guiones (tal vez)
-// para llamar a otro metodo q le diga al usuario que esta mal
-
 $(document).ready(function(){
 ////////////   INSERT MODAL    ////////////////
     // Open INSERT modal window
     $('#buttonAdd').click(function(){
         $('#modalInsert').modal('show');
+        console.log('Modal Insert Working');
       });
     // Close INSERT modal window
     var modalInsert = $('#modalInsert');
-    var closeButton = $('.modal-close')
+    var closeButton = $('.modal-close-insert')
     closeButton.on('click',function(){
         modalInsert.modal('hide');
+        $('#first-name').val('');
+        $('#last-name').val('');
+        $('#phone1').val('');
+        $('#phone2').val('');
+        $('#phone3').val('');
     })
     // Close INSERT modal window with esc key
     $(document).keydown(function(e) {
         if (e.keyCode == 27) {
           $('#modalInsert').modal('hide');
+          $('#first-name').val('');
+          $('#last-name').val('');
+          $('#phone1').val('');
+          $('#phone2').val('');
+          $('#phone3').val('');
         }
-      });
-////////////   UPDATE MODAL    ////////////////
-    // Open UPDATE modal window
-    $('#buttonEdit').click(function(){
-        $('#modalEdit').modal('show');
-        console.log('Hola mundo');
-      });
-    // Close UPDATE modal window
-    var modalEdit = $('#modalEdit');
-    var closeButton = $('.modal-close')
-    closeButton.on('click',function(){
-        modalEdit.modal('hide');
-    })
-    // Close UPDATE modal window with esc key
-    $(document).keydown(function(e) {
-        if (e.keyCode == 27) {
-          $('#modalEdit').modal('hide');
-        }
-      });
-
-    
-
-    // Insert to database 
+      });    
+    // INSERT to database 
     function insert() {
         var first_name = $('#first-name').val();
         var last_name = $('#last-name').val();
@@ -62,12 +48,7 @@ $(document).ready(function(){
             contentType: "application/json",
             success: function(response){
                 console.log(response);
-                $('#first-name').val('');
-                $('#last-name').val('');
-                $('#phone1').val('');1
-                $('#phone2').val('');
-                $('#phone3').val('');
-                modalUpdate.modal('hide');
+                modalInsert.modal('hide');
                 location.reload();
             },
             error: function(xhr, status, error){
@@ -85,7 +66,7 @@ $(document).ready(function(){
         }
     });
 
-    // Dynamic list
+    // DYNAMIC LIST
     var dataContainer = $('<div class="data-container"></div>');
     $.ajax({
         url: 'http://localhost:5000/contacts',
@@ -97,12 +78,14 @@ $(document).ready(function(){
                 var newContact = $('<div class="data" id="'+ contact.contact_id + '">' +
                                         '<div class="data-content">'+
                                             '<h3 class="name">' + 
-                                                contact.first_name + ' ' + contact.last_name +                                                    
+                                            '<span class="firstName">'+ contact.first_name +'</span>'+
+                                            '<span>'+' '+'</span>'+
+                                            '<span class="lastName">'+ contact.last_name +'</span>'+                                               
                                             '</h3>' +
-                                            '<div><i class="bx bxs-phone phone"></i><span>'+ contact.phone_number +'</span></div>' +
+                                            '<div><i class="bx bxs-phone phone"></i><span class="number">'+ contact.phone_number +'</span></div>' +
                                         '</div>' + 
                                         '<div class="edit-container">' +
-                                            '<button type="button" data-toggle="modal" data-target="#modalEdit" id="buttonEdit" ><i class="bx bxs-edit edit"></i></button>' +
+                                            '<button type="button" data-toggle="modal" data-target="#modalEdit" class="buttonEdit" ><i class="bx bxs-edit edit"></i></button>' +
                                         '</div>' +
                                         '<div class="delete-container">' +
                                             '<div class="delete-box"><i class="bx bxs-trash delete"></i></div>' +
@@ -118,7 +101,7 @@ $(document).ready(function(){
         }
     });
 
-    // Delete row 
+    // DELETE row 
     $(document).on('click', '.delete-box',function() {
         var id = $(this).closest('.data').attr('id'); 
         $.ajax({
@@ -134,5 +117,85 @@ $(document).ready(function(){
             }
         });
     });
+////////////   UPDATE MODAL    ////////////////
+    // To display modal
+    $('#contacts-container').on('click', '.buttonEdit', function() {
+        // Open EDIT modal window
+        var contact_id = $(this).parents('.data').attr('id');
+        var data = $(this).parents('.data');
+        var firstName = data.find('.firstName').text();
+        var lastName = data.find('.lastName').text();
+        var phone = data.find('.number').text();
+        const regex = /(\w{3})-(\w{3})-(\w{4})/;
+        var phone1 = phone.match(regex)[1];
+        var phone2 = phone.match(regex)[2];
+        var phone3 = phone.match(regex)[3];
+        $('#modalEdit').modal('show');
+        $('#first-name-update').val(firstName);
+        $('#last-name-update').val(lastName);   
+        $('#phone1-update').val(phone1);
+        $('#phone2-update').val(phone2);
+        $('#phone3-update').val(phone3);     
+        console.log(contact_id,firstName,lastName);
+
+        // To connect with Flask
+        function update() {
+            var contact_id = $(this).data('contact-id');
+            console.log(contact_id);
+            // var first_name = $('#first-name-update').val();
+            // var last_name = $('#last-name-update').val();
+            // var phone1 = $('#phone1-update').val();
+            // var phone2 = $('#phone2-update').val();
+            // var phone3 = $('#phone3-update').val();
+            // var phone_number = phone1 + '-' + phone2 + '-' + phone3;
+            // $.ajax({
+            //     type: 'PUT',
+            //     url: 'http://localhost:5000/update/',
+            //     data: JSON.stringify({
+            //         "first_name": first_name,
+            //         "last_name": last_name,
+            //         "phone_number": phone_number,
+            //         "contact_id": contact_id
+            //     }),
+            //     dataType: "json",
+            //     contentType: "application/json",
+            //     success: function(response) {
+            //         console.log(response.message);
+            //         console.log(id);        
+            //         location.reload();        
+            //     },
+            //     error: function(xhr, status, error) {
+            //         console.log(xhr.responseText);
+        }
+
+        $('#buttonUpdate').click(function(){
+            update();
+        });
+
+        // Close EDIT modal window
+        var modalInsert = $('#modalEdit');
+        var closeButton = $('.modal-close-edit')
+        closeButton.on('click',function(){
+            modalInsert.modal('hide');
+            $('#first-name-update').val('');
+            $('#last-name-update').val('');
+            $('#phone1-update').val('');
+            $('#phone2-update').val('');
+            $('#phone3-update').val('');
+        })
+        // Close EDIT modal window with esc key
+        $(document).keydown(function(e) {
+            if (e.keyCode == 27) {
+            $('#modalEdit').modal('hide');
+            $('#first-name-update').val('');
+            $('#last-name-update').val('');
+            $('#phone1-update').val('');
+            $('#phone2-update').val('');
+            $('#phone3-update').val('');
+            }
+        });
+    });   
+
+    
 
 });

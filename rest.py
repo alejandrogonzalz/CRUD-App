@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, make_response, request
 from flask_cors import CORS, cross_origin
 import pymysql
 
@@ -25,7 +25,7 @@ def insert_new_entry():
         val = [(first_name, last_name, phone_number)]
         cursor.executemany(sql,val)
         mydb.commit()
-    # close the daatabase
+    # close the database
     mydb.close()
            
     return jsonify({'message':'New entry added'}), 200
@@ -79,20 +79,37 @@ def delete_entry(id):
 
     return jsonify({'message': 'Entry deleted'}), 200
 
-# UPDATE 
-# @app.route("/update", methods = ["POST"])
-# @cross_origin()
-# def update_entry():
-#         mydb = pymysql.connect(
-#         host="localhost",
-#         user="root",  
-#         password="root",
-#         database="crud_app"
-#     )
-#     # with mydb.cursor() as cursor:
-#     #     sql
-#     # mydb.close()
-#     return jsonify({'message': 'Updated to database'}), 200
+# UPDATE to database
+@app.route("/update", methods = ["PUT"])
+@cross_origin()
+def update_entry():
+    data = request.get_json()
+    first_name = data['first_name']
+    last_name = data['last_name']
+    phone_number = data ['phone_number']
+    contact_id = int(data['contact_id'])
+    # open the database
+    mydb = pymysql.connect(
+        host="localhost",
+        user="root",  
+        password="root",
+        database="crud_app"
+    )
+    # execute UPDATE query
+    with mydb.cursor() as cursor:
+        sql = "UPDATE contacts SET first_name = %s, last_name = %s, phone_number = %s WHERE contact_id = %s"
+        val = [(first_name, last_name, phone_number, contact_id)]
+        cursor.executemany(sql,val)
+        mydb.commit()
+
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'PUT, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    # close the database
+    mydb.close()
+    response = make_response(jsonify({'message': 'Updated to database'}), 200)
+
+    return response
 
 # Hello world 
 @app.route('/api/hello')
@@ -103,6 +120,7 @@ def hello():
 def after_request(response):
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
     return response
+
 
 if __name__ == '__main__':
     app.run(debug=True)
