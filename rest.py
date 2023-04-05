@@ -4,7 +4,7 @@ import pymysql
 
 app = Flask(__name__)
 CORS(app)
-# function to execute new entries to the database
+# INSERT new entries to the database
 @app.route("/insert", methods = ["POST"])
 @cross_origin()
 def insert_new_entry():
@@ -41,7 +41,7 @@ def get_contacts():
     )
 
     with mydb.cursor() as cursor:
-        sql = "SELECT phone_number, first_name, last_name, date_registered FROM contacts ORDER BY date_registered DESC"
+        sql = "SELECT contact_id, phone_number, first_name, last_name, date_registered FROM contacts ORDER BY date_registered DESC"
         cursor.execute(sql)
         rows = cursor.fetchall()
 
@@ -58,7 +58,7 @@ def get_contacts():
     return jsonify({'contacts':result})
 
 # DELETE route to delete a row from the database
-@app.route('/delete/<string:id>', methods=['DELETE'])
+@app.route('/delete/<int:id>', methods=['DELETE'])
 @cross_origin()
 def delete_entry(id):
 
@@ -70,7 +70,7 @@ def delete_entry(id):
     )
 
     with mydb.cursor() as cursor:
-        sql = "DELETE FROM contacts WHERE phone_number=%s"
+        sql = "DELETE FROM contacts WHERE contact_id=%s"
         val = (id,)
         cursor.execute(sql,val)
         mydb.commit()
@@ -79,7 +79,20 @@ def delete_entry(id):
 
     return jsonify({'message': 'Entry deleted'}), 200
 
-
+# UPDATE 
+# @app.route("/update", methods = ["POST"])
+# @cross_origin()
+# def update_entry():
+#         mydb = pymysql.connect(
+#         host="localhost",
+#         user="root",  
+#         password="root",
+#         database="crud_app"
+#     )
+#     # with mydb.cursor() as cursor:
+#     #     sql
+#     # mydb.close()
+#     return jsonify({'message': 'Updated to database'}), 200
 
 # Hello world 
 @app.route('/api/hello')

@@ -133,7 +133,7 @@
     margin: 0 10px 0;
 }
 
-.edit-box{
+.editBox{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -145,7 +145,7 @@
     transition: all 0.3s ease;
 }
 
-.edit-box:hover{
+.editBox:hover{
     background-color: #0B5ED7;
     .edit{
         color: #EAFFFF;

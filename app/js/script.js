@@ -3,23 +3,43 @@
 // para llamar a otro metodo q le diga al usuario que esta mal
 
 $(document).ready(function(){
-    // Open modal window
+////////////   INSERT MODAL    ////////////////
+    // Open INSERT modal window
     $('#buttonAdd').click(function(){
-        $('#myModal').modal('show');
+        $('#modalInsert').modal('show');
       });
-
-    // Close modal window
-    var modal = $('#myModal');
+    // Close INSERT modal window
+    var modalInsert = $('#modalInsert');
     var closeButton = $('.modal-close')
     closeButton.on('click',function(){
-        modal.modal('hide');
+        modalInsert.modal('hide');
     })
-    // Close modal window with esc key
+    // Close INSERT modal window with esc key
     $(document).keydown(function(e) {
         if (e.keyCode == 27) {
-          $('#myModal').modal('hide');
+          $('#modalInsert').modal('hide');
         }
       });
+////////////   UPDATE MODAL    ////////////////
+    // Open UPDATE modal window
+    $('#buttonEdit').click(function(){
+        $('#modalEdit').modal('show');
+        console.log('Hola mundo');
+      });
+    // Close UPDATE modal window
+    var modalEdit = $('#modalEdit');
+    var closeButton = $('.modal-close')
+    closeButton.on('click',function(){
+        modalEdit.modal('hide');
+    })
+    // Close UPDATE modal window with esc key
+    $(document).keydown(function(e) {
+        if (e.keyCode == 27) {
+          $('#modalEdit').modal('hide');
+        }
+      });
+
+    
 
     // Insert to database 
     function insert() {
@@ -44,10 +64,10 @@ $(document).ready(function(){
                 console.log(response);
                 $('#first-name').val('');
                 $('#last-name').val('');
-                $('#phone1').val('');
+                $('#phone1').val('');1
                 $('#phone2').val('');
                 $('#phone3').val('');
-                modal.modal('hide');
+                modalUpdate.modal('hide');
                 location.reload();
             },
             error: function(xhr, status, error){
@@ -74,7 +94,7 @@ $(document).ready(function(){
         success: function(data){
             // Iterate over the query made by python to create a new div element
             $.each(data.contacts,function(index, contact){
-                var newContact = $('<div class="data" id="'+ contact.phone_number + '">' +
+                var newContact = $('<div class="data" id="'+ contact.contact_id + '">' +
                                         '<div class="data-content">'+
                                             '<h3 class="name">' + 
                                                 contact.first_name + ' ' + contact.last_name +                                                    
@@ -82,7 +102,7 @@ $(document).ready(function(){
                                             '<div><i class="bx bxs-phone phone"></i><span>'+ contact.phone_number +'</span></div>' +
                                         '</div>' + 
                                         '<div class="edit-container">' +
-                                            '<div class="edit-box"><i class="bx bxs-edit edit"></i></div>' +
+                                            '<button type="button" data-toggle="modal" data-target="#modalEdit" id="buttonEdit" ><i class="bx bxs-edit edit"></i></button>' +
                                         '</div>' +
                                         '<div class="delete-container">' +
                                             '<div class="delete-box"><i class="bx bxs-trash delete"></i></div>' +
@@ -108,7 +128,6 @@ $(document).ready(function(){
                 console.log(response.message);
                 console.log(id);
                 $('#'+ id).remove();
-                location.reload();
             },
             error: function(xhr, status, error) {
                 console.log(xhr.responseText);
