@@ -139,38 +139,39 @@ $(document).ready(function(){
         console.log(contact_id,firstName,lastName);
 
         // To connect with Flask
-        function update() {
-            var contact_id = $(this).data('contact-id');
-            console.log(contact_id);
-            // var first_name = $('#first-name-update').val();
-            // var last_name = $('#last-name-update').val();
-            // var phone1 = $('#phone1-update').val();
-            // var phone2 = $('#phone2-update').val();
-            // var phone3 = $('#phone3-update').val();
-            // var phone_number = phone1 + '-' + phone2 + '-' + phone3;
-            // $.ajax({
-            //     type: 'PUT',
-            //     url: 'http://localhost:5000/update/',
-            //     data: JSON.stringify({
-            //         "first_name": first_name,
-            //         "last_name": last_name,
-            //         "phone_number": phone_number,
-            //         "contact_id": contact_id
-            //     }),
-            //     dataType: "json",
-            //     contentType: "application/json",
-            //     success: function(response) {
-            //         console.log(response.message);
-            //         console.log(id);        
-            //         location.reload();        
-            //     },
-            //     error: function(xhr, status, error) {
-            //         console.log(xhr.responseText);
+        function update(contact_id) {
+            return function() {
+                var first_name = $('#first-name-update').val();
+                var last_name = $('#last-name-update').val();
+                var phone1 = $('#phone1-update').val();
+                var phone2 = $('#phone2-update').val();
+                var phone3 = $('#phone3-update').val();
+                var phone_number = phone1 + '-' + phone2 + '-' + phone3;
+                $.ajax({
+                    type: 'PUT',
+                    url: "http://localhost:5000/update",
+                    data: JSON.stringify({
+                        "first_name": first_name,
+                        "last_name": last_name,
+                        "phone_number": phone_number,
+                        "contact_id": contact_id
+                    }),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function(response) {
+                        console.log(response.message);
+                        console.log(contact_id);        
+                        location.reload();        
+                    },
+                    error: function(xhr, status, error){
+                        console.log(xhr.responseText);  
+                    }
+                });
+            };            
         }
 
-        $('#buttonUpdate').click(function(){
-            update();
-        });
+        $('#buttonUpdate').off('click');
+        $('#buttonUpdate').on('click', update(contact_id));
 
         // Close EDIT modal window
         var modalInsert = $('#modalEdit');

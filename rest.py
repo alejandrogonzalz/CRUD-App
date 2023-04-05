@@ -94,20 +94,16 @@ def update_entry():
         user="root",  
         password="root",
         database="crud_app"
-    )
+    )        
     # execute UPDATE query
     with mydb.cursor() as cursor:
         sql = "UPDATE contacts SET first_name = %s, last_name = %s, phone_number = %s WHERE contact_id = %s"
         val = [(first_name, last_name, phone_number, contact_id)]
         cursor.executemany(sql,val)
         mydb.commit()
-
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'PUT, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
-    # close the database
+            # close the database
     mydb.close()
-    response = make_response(jsonify({'message': 'Updated to database'}), 200)
+    response = jsonify({'message': 'Updated to database'}), 200
 
     return response
 
