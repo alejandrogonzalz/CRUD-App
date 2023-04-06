@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, make_response, request
+from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 import pymysql
 
@@ -111,11 +111,6 @@ def update_entry():
 @app.route('/api/hello')
 def hello():
     return jsonify({'message': 'Hello, World!'})
-
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-    return response
 
 
 if __name__ == '__main__':

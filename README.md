@@ -8,6 +8,7 @@ conda install PyMySQL
 To create Table:
 
 DROP TABLE IF EXISTS contacts;
+
 CREATE TABLE contacts (
     contact_id int NOT NULL AUTO_INCREMENT,
     phone_number CHAR(12) NOT NULL UNIQUE,

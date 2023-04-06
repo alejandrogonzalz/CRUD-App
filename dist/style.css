@@ -114,6 +114,18 @@ html {
   background: none;
 }
 
+.submit {
+  height: 100%;
+  border: none;
+  background-color: white;
+}
+
+.submit i {
+  font-size: 20px;
+  min-width: 30px;
+  color: gray;
+}
+
 .data {
   display: flex;
   background-color: white;

@@ -25,10 +25,13 @@
                 <h2>Contacts</h2>
                 <button type="button" class="btn btn-primary" id="buttonAdd" data-toggle="modal" data-target="#modalInsert"><span>+ Add Contact</span></button>
             </div>
-            <div class="search-bar">
-                <i class='bx bx-search lens'></i>
-                <input type="search" placeholder="Search for contact by last name..." class="search">
-            </div>  
+            <form>
+                <div class="search-bar">
+                    <i class='bx bx-search lens'></i>
+                    <input type="search" placeholder="Search for contact by last name..." class="search" id="search-bar">
+                    <button type="submit" class="submit"><i class='bx bxs-right-arrow-square'></i></button>
+                </div>  
+            </form>            
             <div id="contacts-container"></div>
         </div>
 

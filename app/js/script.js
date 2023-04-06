@@ -78,9 +78,9 @@ $(document).ready(function(){
                 var newContact = $('<div class="data" id="'+ contact.contact_id + '">' +
                                         '<div class="data-content">'+
                                             '<h3 class="name">' + 
-                                            '<span class="firstName">'+ contact.first_name +'</span>'+
+                                            '<span class="first_name">'+ contact.first_name +'</span>'+
                                             '<span>'+' '+'</span>'+
-                                            '<span class="lastName">'+ contact.last_name +'</span>'+                                               
+                                            '<span class="last_name">'+ contact.last_name +'</span>'+                                               
                                             '</h3>' +
                                             '<div><i class="bx bxs-phone phone"></i><span class="number">'+ contact.phone_number +'</span></div>' +
                                         '</div>' + 
@@ -123,21 +123,20 @@ $(document).ready(function(){
         // Open EDIT modal window
         var contact_id = $(this).parents('.data').attr('id');
         var data = $(this).parents('.data');
-        var firstName = data.find('.firstName').text();
-        var lastName = data.find('.lastName').text();
+        var first_name = data.find('.first_name').text();
+        var last_name = data.find('.last_name').text();
         var phone = data.find('.number').text();
         const regex = /(\w{3})-(\w{3})-(\w{4})/;
         var phone1 = phone.match(regex)[1];
         var phone2 = phone.match(regex)[2];
         var phone3 = phone.match(regex)[3];
         $('#modalEdit').modal('show');
-        $('#first-name-update').val(firstName);
-        $('#last-name-update').val(lastName);   
+        $('#first-name-update').val(first_name);
+        $('#last-name-update').val(last_name);   
         $('#phone1-update').val(phone1);
         $('#phone2-update').val(phone2);
         $('#phone3-update').val(phone3);     
-        console.log(contact_id,firstName,lastName);
-
+        console.log(contact_id,first_name,last_name);
         // To connect with Flask
         function update(contact_id) {
             return function() {
@@ -169,7 +168,6 @@ $(document).ready(function(){
                 });
             };            
         }
-
         $('#buttonUpdate').off('click');
         $('#buttonUpdate').on('click', update(contact_id));
 
@@ -196,7 +194,48 @@ $(document).ready(function(){
             }
         });
     });   
+    // SEARCH from the dynamic list
+    function quitAccents (str){
+        str = str.replace(/[áàâä]/gi, 'a')
+        .replace(/[éèêë]/gi, 'e')
+        .replace(/[íìîï]/gi, 'i')
+        .replace(/[óòôö]/gi, 'o')
+        .replace(/[úùûü]/gi, 'u')
+        .replace(/[ñ]/gi, 'n')
+        .replace(/[ç]/gi, 'c');
+        return str
+    }
 
+    function searchContacts() {
+        var searchQuery = $('#search-bar').val().toLowerCase();
+        $('#contacts-container .data').each(function() {
+          var first_name = $(this).find('.first_name').text().toLowerCase();
+          var last_name = $(this).find('.last_name').text().toLowerCase();
+          var phone_number = $(this).find('.number').text().toLowerCase();
+          first_name = quitAccents(first_name);
+          last_name = quitAccents(last_name);
+
+          if (first_name.indexOf(searchQuery) !== -1 || last_name.indexOf(searchQuery) !== -1 || phone_number.indexOf(searchQuery) !== -1) {
+            $(this).show();
+          } else {
+            $(this).hide();
+          }
+        });
+      }  
+
+    $(document).on('submit', 'form', function(e) {
+        e.preventDefault();
+        searchContacts();
+    });
+
+    $(document).on('keydown', function(e) {
+        if ((e.keyCode == 13) && $('#search-bar').is(':focus')){
+          searchContacts();
+        }
+      });
+      
+    
     
 
+//////////////    END OF THE FILE    ///////////////////////
 });
