@@ -59,7 +59,7 @@ $(document).ready(function(){
     $('#buttonInsert').click(function(){
         insert();
     });
-    $('input').keypress(function(e) {
+    $('#modalInsert input').keypress(function(e) {
         if (e.which == 13) { 
           insert(); 
           return false; 
@@ -122,6 +122,8 @@ $(document).ready(function(){
     $('#contacts-container').on('click', '.buttonEdit', function() {
         // Open EDIT modal window
         var contact_id = $(this).parents('.data').attr('id');
+        var updateFn = update(contact_id);
+
         var data = $(this).parents('.data');
         var first_name = data.find('.first_name').text();
         var last_name = data.find('.last_name').text();
@@ -137,40 +139,16 @@ $(document).ready(function(){
         $('#phone2-update').val(phone2);
         $('#phone3-update').val(phone3);     
         console.log(contact_id,first_name,last_name);
-        // To connect with Flask
-        function update(contact_id) {
-            return function() {
-                var first_name = $('#first-name-update').val();
-                var last_name = $('#last-name-update').val();
-                var phone1 = $('#phone1-update').val();
-                var phone2 = $('#phone2-update').val();
-                var phone3 = $('#phone3-update').val();
-                var phone_number = phone1 + '-' + phone2 + '-' + phone3;
-                $.ajax({
-                    type: 'PUT',
-                    url: "http://localhost:5000/update",
-                    data: JSON.stringify({
-                        "first_name": first_name,
-                        "last_name": last_name,
-                        "phone_number": phone_number,
-                        "contact_id": contact_id
-                    }),
-                    dataType: "json",
-                    contentType: "application/json",
-                    success: function(response) {
-                        console.log(response.message);
-                        console.log(contact_id);        
-                        location.reload();        
-                    },
-                    error: function(xhr, status, error){
-                        console.log(xhr.responseText);  
-                    }
-                });
-            };            
-        }
+        
         $('#buttonUpdate').off('click');
-        $('#buttonUpdate').on('click', update(contact_id));
-
+        $('#buttonUpdate').off('keypress');
+        $('#buttonUpdate').on('click', updateFn);
+        $(document).on('keypress', function(e) {
+            if ((e.keyCode == 13) && $('#modalEdit input').is(':focus')) {
+                e.preventDefault(); // prevent form submission
+                updateFn();
+            }
+        })        
         // Close EDIT modal window
         var modalInsert = $('#modalEdit');
         var closeButton = $('.modal-close-edit')
@@ -194,6 +172,39 @@ $(document).ready(function(){
             }
         });
     });   
+    // To conect with Flask
+    function update(contact_id) {
+        return function() {
+            console.log(contact_id)
+            var first_name = $('#first-name-update').val();
+            var last_name = $('#last-name-update').val();
+            var phone1 = $('#phone1-update').val();
+            var phone2 = $('#phone2-update').val();
+            var phone3 = $('#phone3-update').val();
+            var phone_number = phone1 + '-' + phone2 + '-' + phone3;
+            $.ajax({
+                type: 'PUT',
+                url: "http://localhost:5000/update",
+                data: JSON.stringify({
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "phone_number": phone_number,
+                    "contact_id": contact_id
+                }),
+                dataType: "json",
+                contentType: "application/json",
+                success: function(response) {
+                    console.log(response.message);
+                    console.log(contact_id);        
+                    location.reload();        
+                },
+                error: function(xhr, status, error){
+                    console.log(xhr.responseText);  
+                }
+            });
+        };            
+    }
+    
     // SEARCH from the dynamic list
     function quitAccents (str){
         str = str.replace(/[áàâä]/gi, 'a')
@@ -208,6 +219,7 @@ $(document).ready(function(){
 
     function searchContacts() {
         var searchQuery = $('#search-bar').val().toLowerCase();
+        searchQuery = quitAccents(searchQuery);
         $('#contacts-container .data').each(function() {
           var first_name = $(this).find('.first_name').text().toLowerCase();
           var last_name = $(this).find('.last_name').text().toLowerCase();
