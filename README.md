@@ -9,7 +9,7 @@ This application provides a form where you can enter in first name, last name, a
     -   **Flask** (version 2.2.2)
     -   **Flask-CORS** (version 3.0.10)
     -   **PyMySQL** (version 1.0.2).
--	You must use **MySQL8.0.32 **for it to work.
+-	You must use **MySQL8.0.32** for it to work.
 -   This program utilizes the PyMySQL library to access a MySQL database and create an API. To run the program, it is necessary that the user and password are both set to 'root'. Alternatively, you can modify the code in *rest.py* and *table.py* to use different login credentials (the variables are **my_user** and **my_password**).
 -   **If** you wish to modify the CSS styles, it is recommended that you install Live Sass Compiler by Glen Marks (in VS Code) or any other Live Sass Compilers. If you choose to use the one mentioned, ensure that you add the following code to your settings.json file, to ensure that the CSS is saved in the directory that the HTML file is requesting:
 
