@@ -1,13 +1,18 @@
 $(document).ready(function(){
+    // Global variables
+    var modalInsert = $('#modalInsert');
+    var modalEdit = $('#modalEdit');
+    var modalDelete = $('#modalDelete');
+    var closeButton = $('.modal-close');
+
 ////////////   INSERT MODAL    ////////////////
     // Open INSERT modal window
-    $('#buttonAdd').click(function(){
-        $('#modalInsert').modal('show');
+    $('#buttonAdd').on('click', function(){
+        $(modalInsert).modal('show');
+        $('#first-name').focus();
         console.log('Modal Insert Working');
-      });
+    });
     // Close INSERT modal window
-    var modalInsert = $('#modalInsert');
-    var closeButton = $('.modal-close-insert')
     closeButton.on('click',function(){
         modalInsert.modal('hide');
         $('#first-name').val('');
@@ -19,14 +24,15 @@ $(document).ready(function(){
     // Close INSERT modal window with esc key
     $(document).keydown(function(e) {
         if (e.keyCode == 27) {
-          $('#modalInsert').modal('hide');
+          $(modalInsert).modal('hide');
           $('#first-name').val('');
           $('#last-name').val('');
           $('#phone1').val('');
           $('#phone2').val('');
           $('#phone3').val('');
         }
-      });    
+      });
+
     // INSERT to database 
     function insert() {
         var first_name = $('#first-name').val();
@@ -47,15 +53,43 @@ $(document).ready(function(){
             dataType: "json",
             contentType: "application/json",
             success: function(response){
-                console.log(response);
+                console.log('hola', response);
                 modalInsert.modal('hide');
                 location.reload();
             },
             error: function(xhr, status, error){
-                console.log(xhr.responseText);  
+                console.log(xhr.responseText);
+                var errorJSON = xhr.responseJSON;
+                var errorMsg = errorJSON.message.trim();
+                console.log(errorMsg);
+                console.log(typeof(xhr.responseJSON));
+
+                if (errorMsg.includes('Error 1')) {
+                    // set the input's border color to red
+                    $('#first-name').css({
+                        'border-color': '#dc3545',
+                        'box-shadow': '0 0 0 0.25rem #dc35452e'
+                      });
+                }           
+                if (errorMsg.includes('Error 2')) {
+                    // set the input's border color to red
+                    $('#last-name').css({
+                        'border-color': '#dc3545',
+                        'box-shadow': '0 0 0 0.25rem #dc35452e'
+                      });
+                }
+                if (errorMsg.includes('Error 3')) {
+                    // set the input's border color to red
+                    $('.phone-error').css({
+                        'border-color': '#dc3545',
+                        'box-shadow': '0 0 0 0.25rem #dc35452e'
+                      });
+                    console.log('pintado tel')
+                }
             }
         });
     }
+
     $('#buttonInsert').click(function(){
         insert();
     });
@@ -101,22 +135,6 @@ $(document).ready(function(){
         }
     });
 
-    // DELETE row 
-    $(document).on('click', '.delete-box',function() {
-        var id = $(this).closest('.data').attr('id'); 
-        $.ajax({
-            url: 'http://localhost:5000/delete/' + id,
-            type: 'DELETE',
-            success: function(response) {
-                console.log(response.message);
-                console.log(id);
-                $('#'+ id).remove();
-            },
-            error: function(xhr, status, error) {
-                console.log(xhr.responseText);
-            }
-        });
-    });
 ////////////   UPDATE MODAL    ////////////////
     // To display modal
     $('#contacts-container').on('click', '.buttonEdit', function() {
@@ -132,7 +150,7 @@ $(document).ready(function(){
         var phone1 = phone.match(regex)[1];
         var phone2 = phone.match(regex)[2];
         var phone3 = phone.match(regex)[3];
-        $('#modalEdit').modal('show');
+        $(modalEdit).modal('show');
         $('#first-name-update').val(first_name);
         $('#last-name-update').val(last_name);   
         $('#phone1-update').val(phone1);
@@ -140,6 +158,7 @@ $(document).ready(function(){
         $('#phone3-update').val(phone3);     
         console.log(contact_id,first_name,last_name);
         
+        // Event handler for the delete query
         $('#buttonUpdate').off('click');
         $('#buttonUpdate').off('keypress');
         $('#buttonUpdate').on('click', updateFn);
@@ -150,10 +169,8 @@ $(document).ready(function(){
             }
         })        
         // Close EDIT modal window
-        var modalInsert = $('#modalEdit');
-        var closeButton = $('.modal-close-edit')
-        closeButton.on('click',function(){
-            modalInsert.modal('hide');
+        closeButton.on('click', function(){
+            modalEdit.modal('hide');
             $('#first-name-update').val('');
             $('#last-name-update').val('');
             $('#phone1-update').val('');
@@ -163,7 +180,7 @@ $(document).ready(function(){
         // Close EDIT modal window with esc key
         $(document).keydown(function(e) {
             if (e.keyCode == 27) {
-            $('#modalEdit').modal('hide');
+            $(modalEdit).modal('hide');
             $('#first-name-update').val('');
             $('#last-name-update').val('');
             $('#phone1-update').val('');
@@ -204,7 +221,49 @@ $(document).ready(function(){
             });
         };            
     }
-    
+//////////   END UPDATE MODAL    //////////////
+
+////////////   DELETE MODAL    ////////////////
+    $('#contacts-container').on('click', '.delete-box',function() {
+        var id = $(this).closest('.data').attr('id'); 
+        var deleteFn = delete_contact(id);
+        $(modalDelete).modal('show');
+        console.log('Modal Delete Working',id);
+        
+        $('#buttonDelete').off('click');
+        $('#buttonDelete').on('click', deleteFn);
+
+        // Close DELETE modal 
+        closeButton.on('click', function(){
+            modalDelete.modal('hide');
+        })
+        // Close DELETE modal window with esc key
+        $(document).keydown(function(e) {
+            if (e.keyCode == 27) {
+            $(modalDelete).modal('hide');
+            }
+        });
+    });
+    function delete_contact(id) {
+        return function(){
+            $.ajax({
+                url: 'http://localhost:5000/delete/' + id,
+                type: 'DELETE',
+                success: function(response) {
+                    console.log(response.message);
+                    console.log(id);
+                    $('#'+ id).remove();
+                    $(modalDelete).modal('hide');
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+
+        }
+    }
+//////////   END DELETE MODAL    //////////////
+
     // SEARCH from the dynamic list
     function quitAccents (str){
         str = str.replace(/[áàâä]/gi, 'a')
@@ -217,15 +276,27 @@ $(document).ready(function(){
         return str
     }
 
+    function homogeneousNumbers (n){
+        n = n.replace(/([0-9]{3})(?:-)([0-9]{3})(?:-)([0-9]{4})/g, '$1$2$3')
+        .replace(/([0-9]{3})(?:-)([0-9]{3})(?:-)/g, '$1$2')
+        .replace(/([0-9]{3})(?:-)([0-9]{3})/g, '$1$2')
+        .replace(/([0-9]{3})(?:-)/g, '$1')
+        .replace(/([0-9]{3})/g, '$1');
+        return n
+    }
+
     function searchContacts() {
         var searchQuery = $('#search-bar').val().toLowerCase();
         searchQuery = quitAccents(searchQuery);
+        searchQuery = homogeneousNumbers(searchQuery);
         $('#contacts-container .data').each(function() {
           var first_name = $(this).find('.first_name').text().toLowerCase();
           var last_name = $(this).find('.last_name').text().toLowerCase();
           var phone_number = $(this).find('.number').text().toLowerCase();
           first_name = quitAccents(first_name);
           last_name = quitAccents(last_name);
+          phone_number = homogeneousNumbers(phone_number);
+          console.log(searchQuery);
 
           if (first_name.indexOf(searchQuery) !== -1 || last_name.indexOf(searchQuery) !== -1 || phone_number.indexOf(searchQuery) !== -1) {
             $(this).show();
@@ -234,17 +305,21 @@ $(document).ready(function(){
           }
         });
       }  
-
-    $(document).on('submit', 'form', function(e) {
-        e.preventDefault();
+    
+    $('#search-bar').on('input',function(){
         searchContacts();
     });
 
-    $(document).on('keydown', function(e) {
-        if ((e.keyCode == 13) && $('#search-bar').is(':focus')){
-          searchContacts();
-        }
-      });
+    // $(document).on('submit', 'form', function(e) {
+    //     e.preventDefault();
+    //     searchContacts();
+    // });
+
+    // $(document).on('keydown', function(e) {
+    //     if ((e.keyCode == 13) && $('#search-bar').is(':focus')){
+    //       searchContacts();
+    //     }
+    //   });
       
     
     

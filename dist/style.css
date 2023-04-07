@@ -2,7 +2,6 @@ html {
   font-size: 100%;
   box-sizing: border-box;
   height: 100%;
-  padding-top: 5vh;
 }
 
 *, *::before, *::after {
@@ -54,6 +53,7 @@ html {
   border-radius: 15px;
   width: 50%;
   background-color: #F6F6F6;
+  margin: 40px 0;
 }
 
 .header {
@@ -114,18 +114,6 @@ html {
   background: none;
 }
 
-.submit {
-  height: 100%;
-  border: none;
-  background-color: white;
-}
-
-.submit i {
-  font-size: 20px;
-  min-width: 30px;
-  color: gray;
-}
-
 .data {
   display: flex;
   background-color: white;
@@ -142,7 +130,6 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 5%;
   margin: 0 10px 0;
 }
 
@@ -152,7 +139,7 @@ html {
   justify-content: center;
   background-color: #CB444A;
   aspect-ratio: 1;
-  height: 50%;
+  height: 35px;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -176,7 +163,6 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 5%;
   margin: 0 10px 0;
 }
 
@@ -186,7 +172,7 @@ html {
   justify-content: center;
   background-color: #0D6EFD;
   aspect-ratio: 1;
-  height: 50%;
+  height: 35px;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -205,4 +191,25 @@ html {
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+@media (max-width: 1199.98px) {
+  .app-container {
+    width: 70%;
+  }
+}
+@media (max-width: 991.98px) {
+  .app-container {
+    width: 80%;
+  }
+}
+@media (max-width: 767.98px) {
+  .app-container {
+    width: 90%;
+  }
+}
+@media (max-width: 575.98px) {
+  .app-container {
+    width: 95%;
+  }
 }/*# sourceMappingURL=style.css.map */

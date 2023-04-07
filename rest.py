@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 import pymysql
+import re
 
 app = Flask(__name__)
 CORS(app)
@@ -12,23 +13,50 @@ def insert_new_entry():
     first_name = data['first_name']
     last_name = data['last_name']
     phone_number = data['phone_number']
-    # conect to the database
-    mydb = pymysql.connect(
+    phone_format = r'[0-9]{3}[-][0-9]{3}[-][0-9]{4}'
+    first_name_format = r'\w+'
+    last_name_format = r'\w+'
+
+    # validate inputs
+    msg_error = ''
+    if not re.match(first_name_format, first_name):
+        msg_error = 'Error 1'
+    if not re.match(last_name_format, last_name):
+        msg_error = msg_error + ' Error 2'
+    if not re.match(phone_format, phone_number):
+        msg_error = msg_error + ' Error 3'
+    if msg_error != '':
+        return jsonify({'message': msg_error}), 400
+
+    
+    # if not re.match(first_name_format, first_name):
+    #     return jsonify({'message': 'Error: invalid first name format'}), 400
+    # elif not re.match(last_name_format, last_name):
+    #     return jsonify({'message': 'Error: invalid last name format'}), 400
+    # elif not re.match(phone_format, phone_number):
+    #     return jsonify({'message': 'Error: invalid phone number format'}), 400
+
+    try:
+        # conect to the database
+        mydb = pymysql.connect(
         host="localhost",
         user="root",
         password="root",
         database="crud_app"
     )
     # execute query
-    with mydb.cursor() as cursor:
-        sql = "INSERT INTO contacts (first_name, last_name, phone_number) VALUES (%s, %s, %s)"
-        val = [(first_name, last_name, phone_number)]
-        cursor.executemany(sql,val)
-        mydb.commit()
-    # close the database
-    mydb.close()
-           
-    return jsonify({'message':'New entry added'}), 200
+        with mydb.cursor() as cursor:
+            sql = "INSERT INTO contacts (first_name, last_name, phone_number) VALUES (%s, %s, %s)"
+            val = [(first_name, last_name, phone_number)]
+            cursor.executemany(sql,val)
+            mydb.commit()
+        # close the database
+        return jsonify({'message':'New entry added'}), 200
+    except:
+        return jsonify({'message': 'Insertion failed'}), 500
+    finally:
+        mydb.close()           
+
 
 # GET all the rows from the table
 @app.route('/contacts')
@@ -41,7 +69,7 @@ def get_contacts():
     )
 
     with mydb.cursor() as cursor:
-        sql = "SELECT contact_id, phone_number, first_name, last_name, date_registered FROM contacts ORDER BY date_registered DESC"
+        sql = "SELECT contact_id, phone_number, first_name, last_name, date_registered FROM contacts ORDER BY first_name ASC"
         cursor.execute(sql)
         rows = cursor.fetchall()
 

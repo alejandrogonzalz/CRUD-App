@@ -18,6 +18,7 @@
     width: 50%;
     // height: 80%;
     background-color: #F6F6F6;
+    margin: 40px 0;
 }
 
 
@@ -79,19 +80,6 @@
     background: none;
 }
 
-.submit{
-    // width: 10%;
-    height: 100%;
-    border: none;
-    background-color: white;
-}
-
-.submit i{
-    font-size: 20px;
-    min-width: 30px;
-    color: gray;
-}
-
 .data{
     display: flex;
     background-color: white;
@@ -108,7 +96,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 5%;
     margin: 0 10px 0;
 }
 
@@ -118,7 +105,7 @@
     justify-content: center;
     background-color: #CB444A;
     aspect-ratio: 1;
-    height: 50%;
+    height: 35px;
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -142,7 +129,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 5%;
     margin: 0 10px 0;
 }
 
@@ -152,7 +138,7 @@
     justify-content: center;
     background-color: #0D6EFD;
     aspect-ratio: 1;
-    height: 50%;
+    height: 35px;
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -174,29 +160,31 @@
 }
 
 
-// @media (min-width: $sm) {
-//     .app-container{
-//         width: 80%;
-//     }
-// }
-// @media (min-width: $md) {
-//     .app-container{
-//         width: 80%;
-//     }
-// }
-// @media (min-width: $lg) {
-//     .app-container{
-//         width: 60%;
-//     }
-// }
-// @media (min-width: $xl) {
-//     .app-container{
-//         width: 50%;
-//     }
-// }
-// @media (min-width: $xxl) {
-//     .app-container{
-//         width: 50%;
-//     }
-// }
 
+// Large devices (desktops, less than 1200px)
+@media (max-width: 1199.98px) {
+    .app-container{
+        width: 70%;
+    }
+}
+
+// Medium devices (tablets, less than 992px)
+@media (max-width: 991.98px) { 
+    .app-container{
+        width: 80%;
+    }
+}
+
+// Small devices (landscape phones, less than 768px)
+@media (max-width: 767.98px) {
+    .app-container{
+        width: 90%;
+    }
+}
+
+// X-Small devices (portrait phones, less than 576px) 
+@media (max-width: 575.98px) { 
+    .app-container{
+        width: 95%;
+    }
+}
