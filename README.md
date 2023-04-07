@@ -2,7 +2,8 @@
 
 ## Description
 This application provides a form where you can enter in first name, last name, and phone number. It performs 4 basic operations: create new entries in your database, read the entries, update entries by editing any of the properties, and delete the entries.
-![The app should look something like this:](app/content/app-display.png)
+The app should look should look something like this:
+![Display](app/content/app-display.png)
 
 ## Requirements and recommendations:
 -   To run this application, you must have the following packages installed in **Python 3.11.2**: 
@@ -43,4 +44,22 @@ This application provides a form where you can enter in first name, last name, a
             PRIMARY KEY (contact_id)
         );
 
-## Tutorial
+## Guide
+-   To insert contet:
+![Insert](app/content/app-insert.png)
+
+-   It will mark an error if not all the fields are entry:
+![Error](app/content/app-error.png)
+
+-   You can use the search bar to filter among the contacts:
+![Search](app/content/app-search.png)
+
+-   You can edit the contacts you previously inserted:
+![Update](app/content/app-update.png)
+
+- You can delete any contact you want:
+![Delete](app/content/app-delete.png)
+
+
+
+
