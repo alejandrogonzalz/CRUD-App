@@ -58,11 +58,9 @@ $(document).ready(function(){
                 location.reload();
             },
             error: function(xhr, status, error){
-                console.log(xhr.responseText);
                 var errorJSON = xhr.responseJSON;
                 var errorMsg = errorJSON.message.trim();
                 console.log(errorMsg);
-                console.log(typeof(xhr.responseJSON));
 
                 if (errorMsg.includes('Error 1')) {
                     // set the input's border color to red
@@ -70,7 +68,7 @@ $(document).ready(function(){
                         'border-color': '#dc3545',
                         'box-shadow': '0 0 0 0.25rem #dc35452e'
                       });
-                }           
+                } 
                 if (errorMsg.includes('Error 2')) {
                     // set the input's border color to red
                     $('#last-name').css({
@@ -91,9 +89,12 @@ $(document).ready(function(){
     }
 
     $('#buttonInsert').click(function(){
+        $('.form-control').removeAttr('style');
         insert();
     });
     $('#modalInsert input').keypress(function(e) {
+        $('.form-control').removeAttr('style');
+
         if (e.which == 13) { 
           insert(); 
           return false; 
