@@ -142,7 +142,6 @@ $(document).ready(function(){
         // Open EDIT modal window
         var contact_id = $(this).parents('.data').attr('id');
         var updateFn = update(contact_id);
-
         var data = $(this).parents('.data');
         var first_name = data.find('.first_name').text();
         var last_name = data.find('.last_name').text();
@@ -159,7 +158,8 @@ $(document).ready(function(){
         $('#phone3-update').val(phone3);     
         console.log(contact_id,first_name,last_name);
         
-        // Event handler for the delete query
+        // Event handler for the updated query
+        
         $('#buttonUpdate').off('click');
         $('#buttonUpdate').off('keypress');
         $('#buttonUpdate').on('click', updateFn);
@@ -171,6 +171,7 @@ $(document).ready(function(){
         })        
         // Close EDIT modal window
         closeButton.on('click', function(){
+            $('.form-control').removeAttr('style');
             modalEdit.modal('hide');
             $('#first-name-update').val('');
             $('#last-name-update').val('');
@@ -181,6 +182,7 @@ $(document).ready(function(){
         // Close EDIT modal window with esc key
         $(document).keydown(function(e) {
             if (e.keyCode == 27) {
+            $('.form-control').removeAttr('style');
             $(modalEdit).modal('hide');
             $('#first-name-update').val('');
             $('#last-name-update').val('');
@@ -193,6 +195,7 @@ $(document).ready(function(){
     // To conect with Flask
     function update(contact_id) {
         return function() {
+            $('.form-control').removeAttr('style');
             console.log(contact_id)
             var first_name = $('#first-name-update').val();
             var last_name = $('#last-name-update').val();
@@ -217,7 +220,33 @@ $(document).ready(function(){
                     location.reload();        
                 },
                 error: function(xhr, status, error){
-                    console.log(xhr.responseText);  
+                    console.log(xhr.responseText);
+                    var errorJSON = xhr.responseJSON;
+                    var errorMsg = errorJSON.message.trim();
+                    console.log(errorMsg);
+    
+                    if (errorMsg.includes('Error 1')) {
+                        // set the input's border color to red
+                        $('#first-name-update').css({
+                            'border-color': '#dc3545',
+                            'box-shadow': '0 0 0 0.25rem #dc35452e'
+                          });
+                    } 
+                    if (errorMsg.includes('Error 2')) {
+                        // set the input's border color to red
+                        $('#last-name-update').css({
+                            'border-color': '#dc3545',
+                            'box-shadow': '0 0 0 0.25rem #dc35452e'
+                          });
+                    }
+                    if (errorMsg.includes('Error 3')) {
+                        // set the input's border color to red
+                        $('.phone-error').css({
+                            'border-color': '#dc3545',
+                            'box-shadow': '0 0 0 0.25rem #dc35452e'
+                          });
+                        console.log('pintado tel')
+                    }  
                 }
             });
         };            

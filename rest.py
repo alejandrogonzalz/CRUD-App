@@ -28,14 +28,6 @@ def insert_new_entry():
     if msg_error != '':
         return jsonify({'message': msg_error}), 400
 
-    
-    # if not re.match(first_name_format, first_name):
-    #     return jsonify({'message': 'Error: invalid first name format'}), 400
-    # elif not re.match(last_name_format, last_name):
-    #     return jsonify({'message': 'Error: invalid last name format'}), 400
-    # elif not re.match(phone_format, phone_number):
-    #     return jsonify({'message': 'Error: invalid phone number format'}), 400
-
     try:
         # conect to the database
         mydb = pymysql.connect(
@@ -50,11 +42,11 @@ def insert_new_entry():
             val = [(first_name, last_name, phone_number)]
             cursor.executemany(sql,val)
             mydb.commit()
-        # close the database
         return jsonify({'message':'New entry added'}), 200
     except:
         return jsonify({'message': 'Insertion failed'}), 500
     finally:
+        # close the database
         mydb.close()           
 
 
@@ -115,25 +107,44 @@ def update_entry():
     first_name = data['first_name']
     last_name = data['last_name']
     phone_number = data ['phone_number']
-    contact_id = int(data['contact_id'])
-    # open the database
-    mydb = pymysql.connect(
-        host="localhost",
-        user="root",  
-        password="root",
-        database="crud_app"
-    )        
-    # execute UPDATE query
-    with mydb.cursor() as cursor:
-        sql = "UPDATE contacts SET first_name = %s, last_name = %s, phone_number = %s WHERE contact_id = %s"
-        val = [(first_name, last_name, phone_number, contact_id)]
-        cursor.executemany(sql,val)
-        mydb.commit()
-            # close the database
-    mydb.close()
-    response = jsonify({'message': 'Updated to database'}), 200
+    contact_id = int(data['contact_id'])    
+    phone_format = r'[0-9]{3}[-][0-9]{3}[-][0-9]{4}'
+    first_name_format = r'\w+'
+    last_name_format = r'\w+'
 
-    return response
+    # validate inputs
+    msg_error = ''
+    if not re.match(first_name_format, first_name):
+        msg_error = 'Error 1'
+    if not re.match(last_name_format, last_name):
+        msg_error = msg_error + ' Error 2'
+    if not re.match(phone_format, phone_number):
+        msg_error = msg_error + ' Error 3'
+    if msg_error != '':
+        return jsonify({'message': msg_error}), 400
+
+    try:
+        # open the database
+        mydb = pymysql.connect(
+            host="localhost",
+            user="root",  
+            password="root",
+            database="crud_app"
+        )        
+        # execute UPDATE query
+        with mydb.cursor() as cursor:
+            sql = "UPDATE contacts SET first_name = %s, last_name = %s, phone_number = %s WHERE contact_id = %s"
+            val = [(first_name, last_name, phone_number, contact_id)]
+            cursor.executemany(sql,val)
+            mydb.commit()
+        return jsonify({'message': 'Updated to database'}), 200
+    except:
+        return jsonify({'message': 'Updated failed'}), 500
+
+    finally:
+        #close the database
+        mydb.close()
+
 
 # Hello world 
 @app.route('/api/hello')
