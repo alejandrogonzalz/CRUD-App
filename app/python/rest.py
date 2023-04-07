@@ -3,8 +3,13 @@ from flask_cors import CORS, cross_origin
 import pymysql
 import re
 
+# Create web application and enabling Cross-Origin Resource Sharing (CORS) 
 app = Flask(__name__)
 CORS(app)
+
+# To change your MySQL credentials
+my_user = 'root'
+my_password = 'root'
 
 # INSERT new entries to the database
 @app.route("/insert", methods = ["POST"])
@@ -31,8 +36,8 @@ def insert_new_entry():
     try:
         mydb = pymysql.connect(
         host="localhost",
-        user="root",
-        password="root",
+        user= my_user,
+        password= my_password,
         database="crud_app"
     )
     # execute query
@@ -57,8 +62,8 @@ def get_contacts():
     # open the database
     mydb = pymysql.connect(
         host="localhost",
-        user="root",
-        password="root",
+        user= my_user,
+        password= my_password,
         database="crud_app"
     )
     # execute query
@@ -86,8 +91,8 @@ def delete_entry(id):
     # open the database
     mydb = pymysql.connect(
         host="localhost",
-        user="root",
-        password="root",
+        user= my_user,
+        password= my_password,
         database="crud_app"
     )
     # execute query
@@ -128,8 +133,8 @@ def update_entry():
         # open the database
         mydb = pymysql.connect(
             host="localhost",
-            user="root",  
-            password="root",
+            user= my_user,  
+            password= my_password,
             database="crud_app"
         )        
         # execute UPDATE query
@@ -151,6 +156,7 @@ def update_entry():
 def hello():
     return jsonify({'message': 'Hello, World!'})
 
+# Only execute if the script is being run as the main program
 if __name__ == '__main__':
     app.run(debug=True)
 

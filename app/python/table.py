@@ -1,11 +1,15 @@
 import pymysql
 
+# To change your MySQL credentials
+my_user = 'root'
+my_password = 'root'
+
 def create_database():
     # Connect to the MySQL server
     connection = pymysql.connect(
         host='localhost',
-        user='root',
-        password='root',
+        user= my_user,
+        password= my_password,
         db='mysql'
     )
     # Execute query
@@ -23,8 +27,8 @@ def create_table():
     # Connect to the MySQL server
     connection = pymysql.connect(
         host='localhost',
-        user='root',
-        password='root',
+        user= my_user,
+        password= my_password,
         db='crud_app'
     )
      # Create cursor object

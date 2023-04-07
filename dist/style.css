@@ -8,11 +8,6 @@ html {
   box-sizing: inherit;
 }
 
-.nopadding {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
 #m-close {
   background-color: transparent;
   border: none;
