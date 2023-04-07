@@ -19,7 +19,11 @@
 -   You can start the index.html file by simply clicking on it or by using a Live Server extension in your preferred IDE.
 
 ## MySQL table 
--   This is the raw query to create the table in MySQL:
+-   This is the query used to create the DATABASE in MySQL:
+
+        CREATE DATABASE IF NOT EXISTS crud_app;
+
+-   This is the query used to create the TABLE in MySQL:
 
         DROP TABLE IF EXISTS contacts;
 
