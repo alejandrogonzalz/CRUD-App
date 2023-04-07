@@ -5,6 +5,7 @@ import re
 
 app = Flask(__name__)
 CORS(app)
+
 # INSERT new entries to the database
 @app.route("/insert", methods = ["POST"])
 @cross_origin()
@@ -16,7 +17,6 @@ def insert_new_entry():
     phone_format = r'[0-9]{3}[-][0-9]{3}[-][0-9]{4}'
     first_name_format = r'\w+'
     last_name_format = r'\w+'
-
     # validate inputs
     msg_error = ''
     if not re.match(first_name_format, first_name):
@@ -27,9 +27,8 @@ def insert_new_entry():
         msg_error = msg_error + ' Error 3'
     if msg_error != '':
         return jsonify({'message': msg_error}), 400
-
+    # conect to the database
     try:
-        # conect to the database
         mydb = pymysql.connect(
         host="localhost",
         user="root",
@@ -38,33 +37,35 @@ def insert_new_entry():
     )
     # execute query
         with mydb.cursor() as cursor:
-            sql = "INSERT INTO contacts (first_name, last_name, phone_number) VALUES (%s, %s, %s)"
+            query = "INSERT INTO contacts (first_name, last_name, phone_number) VALUES (%s, %s, %s)"
             val = [(first_name, last_name, phone_number)]
-            cursor.executemany(sql,val)
+            cursor.executemany(query,val)
             mydb.commit()
+        # message of success
         return jsonify({'message':'New entry added'}), 200
+    # message error
     except:
         return jsonify({'message': 'Insertion failed'}), 500
     finally:
         # close the database
+        cursor.close()
         mydb.close()           
-
 
 # GET all the rows from the table
 @app.route('/contacts')
 def get_contacts():
+    # open the database
     mydb = pymysql.connect(
         host="localhost",
         user="root",
         password="root",
         database="crud_app"
     )
-
+    # execute query
     with mydb.cursor() as cursor:
-        sql = "SELECT contact_id, phone_number, first_name, last_name, date_registered FROM contacts ORDER BY first_name ASC"
-        cursor.execute(sql)
+        query = "SELECT contact_id, phone_number, first_name, last_name, date_registered FROM contacts ORDER BY first_name ASC"
+        cursor.execute(query)
         rows = cursor.fetchall()
-
     # transform the list of tuples from cursor.fetchall() to a list of dictionaries by first 
     # getting all the columns names using cursor.description attribute and then zip them with 
     # the rows returned by cursor.fetchall()
@@ -72,31 +73,33 @@ def get_contacts():
     result = []
     for row in rows:
         result.append(dict(zip(columns,row)))
-
+    # close the database
+    cursor.close()
     mydb.close()
-
+    # to display all the database 
     return jsonify({'contacts':result})
 
 # DELETE route to delete a row from the database
 @app.route('/delete/<int:id>', methods=['DELETE'])
 @cross_origin()
 def delete_entry(id):
-
+    # open the database
     mydb = pymysql.connect(
         host="localhost",
         user="root",
         password="root",
         database="crud_app"
     )
-
+    # execute query
     with mydb.cursor() as cursor:
-        sql = "DELETE FROM contacts WHERE contact_id=%s"
+        query = "DELETE FROM contacts WHERE contact_id=%s"
         val = (id,)
-        cursor.execute(sql,val)
+        cursor.execute(query,val)
         mydb.commit()
-
+    # close the database
+    cursor.close()
     mydb.close()
-
+    # message of success
     return jsonify({'message': 'Entry deleted'}), 200
 
 # UPDATE to database
@@ -111,7 +114,6 @@ def update_entry():
     phone_format = r'[0-9]{3}[-][0-9]{3}[-][0-9]{4}'
     first_name_format = r'\w+'
     last_name_format = r'\w+'
-
     # validate inputs
     msg_error = ''
     if not re.match(first_name_format, first_name):
@@ -122,7 +124,6 @@ def update_entry():
         msg_error = msg_error + ' Error 3'
     if msg_error != '':
         return jsonify({'message': msg_error}), 400
-
     try:
         # open the database
         mydb = pymysql.connect(
@@ -133,24 +134,22 @@ def update_entry():
         )        
         # execute UPDATE query
         with mydb.cursor() as cursor:
-            sql = "UPDATE contacts SET first_name = %s, last_name = %s, phone_number = %s WHERE contact_id = %s"
+            query = "UPDATE contacts SET first_name = %s, last_name = %s, phone_number = %s WHERE contact_id = %s"
             val = [(first_name, last_name, phone_number, contact_id)]
-            cursor.executemany(sql,val)
+            cursor.executemany(query,val)
             mydb.commit()
         return jsonify({'message': 'Updated to database'}), 200
     except:
         return jsonify({'message': 'Updated failed'}), 500
-
     finally:
         #close the database
+        cursor.close()
         mydb.close()
 
-
-# Hello world 
+# Hello world to check if the API is working
 @app.route('/api/hello')
 def hello():
     return jsonify({'message': 'Hello, World!'})
-
 
 if __name__ == '__main__':
     app.run(debug=True)

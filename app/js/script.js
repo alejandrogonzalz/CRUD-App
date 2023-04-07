@@ -4,7 +4,6 @@ $(document).ready(function(){
     var modalEdit = $('#modalEdit');
     var modalDelete = $('#modalDelete');
     var closeButton = $('.modal-close');
-
 ////////////   INSERT MODAL    ////////////////
     // Open INSERT modal window
     $('#buttonAdd').on('click', function(){
@@ -32,7 +31,6 @@ $(document).ready(function(){
           $('#phone3').val('');
         }
       });
-
     // INSERT to database 
     function insert() {
         var first_name = $('#first-name').val();
@@ -87,7 +85,6 @@ $(document).ready(function(){
             }
         });
     }
-
     $('#buttonInsert').click(function(){
         $('.form-control').removeAttr('style');
         insert();
@@ -100,7 +97,6 @@ $(document).ready(function(){
           return false; 
         }
     });
-
     // DYNAMIC LIST
     var dataContainer = $('<div class="data-container"></div>');
     $.ajax({
@@ -135,7 +131,6 @@ $(document).ready(function(){
             console.log('Error: '+ error.message);
         }
     });
-
 ////////////   UPDATE MODAL    ////////////////
     // To display modal
     $('#contacts-container').on('click', '.buttonEdit', function() {
@@ -156,10 +151,8 @@ $(document).ready(function(){
         $('#phone1-update').val(phone1);
         $('#phone2-update').val(phone2);
         $('#phone3-update').val(phone3);     
-        console.log(contact_id,first_name,last_name);
-        
-        // Event handler for the updated query
-        
+        console.log(contact_id,first_name,last_name);   
+        // Event handler for the updated query    
         $('#buttonUpdate').off('click');
         $('#buttonUpdate').off('keypress');
         $('#buttonUpdate').on('click', updateFn);
@@ -301,7 +294,8 @@ $(document).ready(function(){
     }
 //////////   END DELETE MODAL    //////////////
 
-    // SEARCH from the dynamic list
+//////////   END DELETE MODAL    //////////////
+    // Function to quit accents
     function quitAccents (str){
         str = str.replace(/[áàâä]/gi, 'a')
         .replace(/[éèêë]/gi, 'e')
@@ -312,7 +306,7 @@ $(document).ready(function(){
         .replace(/[ç]/gi, 'c');
         return str
     }
-
+    // Function to make numbers homogeneous
     function homogeneousNumbers (n){
         n = n.replace(/([0-9]{3})(?:-)([0-9]{3})(?:-)([0-9]{4})/g, '$1$2$3')
         .replace(/([0-9]{3})(?:-)([0-9]{3})(?:-)/g, '$1$2')
@@ -321,7 +315,7 @@ $(document).ready(function(){
         .replace(/([0-9]{3})/g, '$1');
         return n
     }
-
+    // Function to search contacts
     function searchContacts() {
         var searchQuery = $('#search-bar').val().toLowerCase();
         searchQuery = quitAccents(searchQuery);
@@ -334,7 +328,6 @@ $(document).ready(function(){
           last_name = quitAccents(last_name);
           phone_number = homogeneousNumbers(phone_number);
           console.log(searchQuery);
-
           if (first_name.indexOf(searchQuery) !== -1 || last_name.indexOf(searchQuery) !== -1 || phone_number.indexOf(searchQuery) !== -1) {
             $(this).show();
           } else {
@@ -342,24 +335,9 @@ $(document).ready(function(){
           }
         });
       }  
-    
+    // Search contacts by just writing and not pressing enter
     $('#search-bar').on('input',function(){
         searchContacts();
     });
-
-    // $(document).on('submit', 'form', function(e) {
-    //     e.preventDefault();
-    //     searchContacts();
-    // });
-
-    // $(document).on('keydown', function(e) {
-    //     if ((e.keyCode == 13) && $('#search-bar').is(':focus')){
-    //       searchContacts();
-    //     }
-    //   });
-      
-    
-    
-
 //////////////    END OF THE FILE    ///////////////////////
 });
