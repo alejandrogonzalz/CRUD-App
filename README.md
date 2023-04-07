@@ -1,5 +1,8 @@
 # CRUD-App
 
+## Description
+This application provides a form where you can enter in first name, last name, and phone number. It performs 4 basic operations: create new entries in your database, read the entries, update entries by editing any of the properties, and delete the entries.
+
 ## Requirements and recommendations:
 -   To run this application, you must have the following packages installed in Python 3.11.2: Flask (version 2.2.2), Flask-CORS (version 3.0.10), and PyMySQL (version 1.0.2).
 -	You must use MySQL8.0.32 for it to work.
