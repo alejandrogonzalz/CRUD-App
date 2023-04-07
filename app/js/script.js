@@ -262,6 +262,13 @@ $(document).ready(function(){
         
         $('#buttonDelete').off('click');
         $('#buttonDelete').on('click', deleteFn);
+        $('#buttonUpdate').off('keypress');
+        $(document).on('keypress', function(e) {
+            if ((e.keyCode == 13)) {
+                e.preventDefault(); // prevent form submission
+                deleteFn();
+            }
+        })    
 
         // Close DELETE modal 
         closeButton.on('click', function(){
