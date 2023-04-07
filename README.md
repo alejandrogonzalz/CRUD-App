@@ -2,6 +2,7 @@
 
 ## Description
 This application provides a form where you can enter in first name, last name, and phone number. It performs 4 basic operations: create new entries in your database, read the entries, update entries by editing any of the properties, and delete the entries.
+![The app should look something like this:](app/content/app-display.png)
 
 ## Requirements and recommendations:
 -   To run this application, you must have the following packages installed in **Python 3.11.2**: 
@@ -41,3 +42,5 @@ This application provides a form where you can enter in first name, last name, a
             date_registered DATETIME NOT NULL DEFAULT NOW(),
             PRIMARY KEY (contact_id)
         );
+
+## Tutorial
