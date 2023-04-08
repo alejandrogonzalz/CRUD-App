@@ -1,6 +1,6 @@
 # CRUD-App
 
-## Description
+## Description:
 This application provides a form where you can enter in first name, last name, and phone number. It performs 4 basic operations: create new entries in your database, read the entries, update entries by editing any of the properties, and delete the entries.
 The app should look should look something like this:
 ![Display](app/content/app-display.png)
@@ -25,13 +25,13 @@ The app should look should look something like this:
 ## To run the file:
 -   To run it in the cmd (on Windows), open the cmd in the Python directory first and then execute the following commands:
 
-'python table.py'
-'set FLASK_APP=rest.py'
-'python rest.py'
+$   python table.py
+$   set FLASK_APP=rest.py
+$   python rest.py
 
 -   You can start the *index.html* file by simply clicking on it or by using a Live Server extension in your preferred IDE.
 
-## MySQL table 
+## MySQL table:
 -   This is the query used to create the DATABASE in MySQL:
 
         CREATE DATABASE IF NOT EXISTS crud_app;
@@ -49,7 +49,7 @@ The app should look should look something like this:
             PRIMARY KEY (contact_id)
         );
 
-## Guide
+## Guide:
 -   To insert contet:
 ![Insert](app/content/app-insert.png)
 
