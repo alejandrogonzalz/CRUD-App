@@ -27,7 +27,11 @@ The app should look should look something like this:
 
 ```
 $ python table.py
+```
+```
 $ set FLASK_APP=rest.py
+```
+```
 $ python rest.py
 ```
 -   You can start the *index.html* file by simply clicking on it or by using a Live Server extension in your preferred IDE.
