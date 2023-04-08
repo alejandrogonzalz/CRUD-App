@@ -22,7 +22,7 @@ The app should look should look something like this:
             }
         ],
 
-## To run the file:
+## To run the application:
 -   To run it in the cmd (on Windows), open the cmd in the Python directory first and then execute the following commands:
 
 ```
