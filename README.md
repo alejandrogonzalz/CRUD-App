@@ -23,7 +23,10 @@ The app should look should look something like this:
         ],
 
 ## To run the file:
--   To launch the application, navigate to the app directory and execute the following files in order: *table.py*, then *rest.py*. These files can be found in the python folder. 
+-   To run it in the cmd (on Windows), open the cmd in the Python directory first and then execute the following commands:
+    -   python table.py
+    -   set FLASK_APP=rest.py
+    -   python rest.py
 -   You can start the *index.html* file by simply clicking on it or by using a Live Server extension in your preferred IDE.
 
 ## MySQL table 
